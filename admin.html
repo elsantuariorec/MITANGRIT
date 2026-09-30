@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Panel · Santuario Live</title>
+<meta name="theme-color" content="#000000">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+<header class="barra">
+  <a class="marca" href="admin.html">Santuario <span>Live</span></a>
+  <span id="sesion-info" class="barra-sub"></span>
+</header>
+<div id="cinta-demo"></div>
+
+<section id="login" class="panel-login oculto">
+  <h1>Panel del organizador</h1>
+  <form id="form-login">
+    <label class="campo"><span>Correo</span><input id="l-correo" type="email" autocomplete="username" required></label>
+    <label class="campo"><span>Clave</span><input id="l-clave" type="password" autocomplete="current-password" required></label>
+    <p class="error-form" id="l-error" role="alert"></p>
+    <button class="boton ancho" type="submit">Entrar</button>
+    <p class="tipo-nota" id="l-nota" style="margin-top:12px"></p>
+  </form>
+</section>
+
+<div id="app" class="oculto">
+  <nav class="pestanas" id="pestanas">
+    <button type="button" data-p="pedidos" class="activa">Pedidos <span class="contador oculto" id="n-pendientes"></span></button>
+    <button type="button" data-p="pagos">Pagos <span class="contador oculto" id="n-pagos"></span></button>
+    <button type="button" data-p="eventos">Eventos</button>
+    <button type="button" data-p="cortesias">Cortesías</button>
+    <button type="button" data-p="reporte">Reporte</button>
+    <button type="button" data-p="ajustes">Ajustes</button>
+    <button type="button" data-ir="puerta.html">Puerta</button>
+  </nav>
+  <main class="contenedor panel" id="vista"></main>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/matcher.js"></script>
+<script src="js/core.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
