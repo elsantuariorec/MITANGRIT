@@ -60,7 +60,7 @@
   /* ---------- cartelera ---------- */
 
   function cartelera() {
-    document.title = 'Santuario Live · Boletas';
+    document.title = 'Mitangrit · Boletas';
     var l = eventosVisibles();
     var h = '<section class="portada"><h1>Próximos eventos</h1>' +
       '<p>Aparta tu entrada, paga con Nequi o Bre-B y tu boleta aparece aquí mismo en un par de minutos.</p></section>';
@@ -106,7 +106,7 @@
   function detalle(id) {
     var ev = eventos[id];
     ev.id = id;
-    document.title = ev.nombre + ' · Santuario Live';
+    document.title = ev.nombre + ' · Mitangrit';
     estado = { ev: ev, tipo: null, cant: 1, usados: {}, flyer: null };
     pintarDetalle();
     SL.db.obtener('flyers/' + id, null, function (e, img) {

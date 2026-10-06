@@ -169,7 +169,7 @@
     ultimoCodigo = codigo.data;
     ultimoTiempo = ahora;
     var id = leerCodigo(codigo.data);
-    if (!id) return mostrar('mal', 'No es una boleta', '', 'Este QR no es de Santuario Live.');
+    if (!id) return mostrar('mal', 'No es una boleta', '', 'Este QR no es de Mitangrit.');
     validar(id);
   }
 

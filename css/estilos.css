@@ -58,13 +58,45 @@ h1, h2, h3 {
 .marca {
   font-family: var(--display);
   font-weight: 800;
-  font-size: 26px;
+  font-size: 30px;
   line-height: 1;
-  color: var(--marfil);
+  letter-spacing: 0.02em;
   text-decoration: none;
   text-transform: uppercase;
+  white-space: nowrap;
 }
-.marca span { color: #C9475E; }
+.marca .mi { color: #FBF7EF; }
+.firma { display: flex; align-items: flex-end; gap: 12px; min-width: 0; }
+.credito {
+  padding-bottom: 3px;
+  color: #A89C8C;
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+}
+.credito strong { color: #E9DFCC; font-weight: 600; }
+.barra-der { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.logo-esquina { height: 40px; width: auto; display: block; flex: none; }
+
+/* TANGRIT: letrero de estudio encendido, luz cálida de bombillo */
+.marca .luz {
+  font-weight: 600;
+  color: #FFE7C2;
+  text-shadow:
+    0 0 2px #FFF1D6,
+    0 0 8px rgba(255, 185, 100, .8),
+    0 0 18px rgba(255, 140, 50, .5),
+    0 0 36px rgba(230, 100, 25, .32);
+  animation: encender 1.6s ease-out 1;
+}
+@keyframes encender {
+  0%   { color: #5a4630; text-shadow: none; }
+  12%  { color: #FFE7C2; text-shadow: 0 0 2px #FFF1D6, 0 0 8px rgba(255, 185, 100, .8); }
+  18%  { color: #5a4630; text-shadow: none; }
+  30%  { color: #FFE7C2; text-shadow: 0 0 2px #FFF1D6, 0 0 8px rgba(255, 185, 100, .8), 0 0 18px rgba(255, 140, 50, .5); }
+  36%  { color: #8a6c48; text-shadow: 0 0 4px rgba(255, 185, 100, .4); }
+  100% { color: #FFE7C2; }
+}
 .barra-sub { font-size: 14px; color: #BFB3A3; }
 
 .cinta-demo {
@@ -449,6 +481,10 @@ h1, h2, h3 {
 
 @media (max-width: 520px) {
   .barra-sub { display: none; }
+  .marca { font-size: 26px; }
+  .firma { gap: 8px; }
+  .credito { padding-bottom: 2px; font-size: 11px; }
+  .logo-esquina { height: 30px; }
   .boleto-cuerpo { padding: 16px; gap: 14px; }
   .boleto-talon { width: 108px; padding: 14px 12px; }
   .talon-precio { font-size: 24px; }
@@ -458,6 +494,14 @@ h1, h2, h3 {
   .fila { grid-template-columns: 1fr; }
   .fila-acciones { justify-content: flex-start; }
   .tiquete-datos { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 380px) {
+  .barra { padding: 12px 14px; gap: 8px; }
+  .marca { font-size: 23px; }
+  .firma { gap: 6px; }
+  .credito { font-size: 10px; padding-bottom: 2px; }
+  .logo-esquina { height: 25px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
