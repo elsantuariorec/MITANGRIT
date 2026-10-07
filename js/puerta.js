@@ -39,7 +39,8 @@
         vista.innerHTML = '<div class="vacio">No hay conexión. Revisa el internet y recarga.</div>';
         return;
       }
-      eventos = evs || {};
+      eventos = {};
+      for (var k in evs || {}) if (evs.hasOwnProperty(k) && evs[k] && !evs[k].archivado) eventos[k] = evs[k];
       var l = SL.aLista(eventos);
       l.sort(function (a, b) { return SL.aFecha(a.fecha) - SL.aFecha(b.fecha); });
       try { evSel = localStorage.getItem('sl_ev_sel'); } catch (x) {}

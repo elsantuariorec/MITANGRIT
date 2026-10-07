@@ -90,7 +90,7 @@
   function elegirEventoInicial() {
     var guardado = null;
     try { guardado = localStorage.getItem('sl_ev_sel'); } catch (e) {}
-    if (guardado && datos.eventos[guardado]) { evSel = guardado; return; }
+    if (guardado && datos.eventos[guardado] && !datos.eventos[guardado].archivado) { evSel = guardado; return; }
     var l = listaEventos();
     var ahora = Date.now() - 12 * 3600000;
     evSel = null;
@@ -101,7 +101,7 @@
   }
 
   function listaEventos() {
-    var l = SL.aLista(datos.eventos);
+    var l = SL.aLista(datos.eventos).filter(function (ev) { return !ev.archivado; });
     l.sort(function (a, b) { return (SL.aFecha(a.fecha) || 0) - (SL.aFecha(b.fecha) || 0); });
     return l;
   }
@@ -452,6 +452,58 @@
     };
   }
 
+  // Eliminar (si no tiene ventas) o archivar (si ya tiene boletas vendidas o apartadas)
+  function prepararQuitar(id) {
+    var ev = datos.eventos[id];
+    var ahora = Date.now();
+    var peds = pedidosDe(id);
+    var activos = peds.filter(function (p) {
+      return p.estado === 'aprobada' || (p.estado === 'pendiente' && p.expira > ahora);
+    });
+    var boton = SL.$('#e-quitar');
+    var nota = SL.$('#e-quitar-nota');
+    if (!activos.length) {
+      boton.textContent = 'Eliminar evento';
+      nota.textContent = 'Este evento no tiene boletas vendidas ni apartadas, así que se puede borrar por completo.';
+      boton.onclick = function () {
+        if (!confirm('¿Eliminar "' + ev.nombre + '" para siempre?\n\nSe borran el evento, su flyer y sus reservas vencidas. No se puede deshacer.')) return;
+        var cambios = {};
+        cambios['eventos/' + id] = null;
+        cambios['flyers/' + id] = null;
+        cambios['ocupacion/' + id] = null;
+        peds.forEach(function (p) { cambios['pedidos/' + p.id] = null; });
+        SL.db.actualizar(cambios, function (e) {
+          if (e) return SL.aviso('No se pudo eliminar: ' + e, 'error');
+          delete datos.eventos[id];
+          peds.forEach(function (p) { delete datos.pedidos[p.id]; });
+          if (evSel === id) elegirEventoInicial();
+          SL.aviso('Evento eliminado', 'ok');
+          vEventos();
+        });
+      };
+    } else {
+      var vendidas = 0;
+      activos.forEach(function (p) { vendidas += p.entradas || p.cant || 1; });
+      boton.textContent = 'Archivar evento';
+      nota.textContent = 'Este evento tiene ' + vendidas + (vendidas === 1 ? ' entrada vendida o apartada' : ' entradas vendidas o apartadas') +
+        ', por eso no se puede borrar: se archiva. Desaparece de la página pública y del panel, pero se guardan los pedidos y las autorizaciones de imagen.';
+      boton.onclick = function () {
+        if (!confirm('¿Archivar "' + ev.nombre + '"?\n\nDeja de verse en la página pública y en el panel. Los pedidos y las boletas que ya existen se conservan.')) return;
+        var cambios = {};
+        cambios['eventos/' + id + '/archivado'] = true;
+        cambios['eventos/' + id + '/publicado'] = false;
+        SL.db.actualizar(cambios, function (e) {
+          if (e) return SL.aviso('No se pudo archivar: ' + e, 'error');
+          datos.eventos[id].archivado = true;
+          datos.eventos[id].publicado = false;
+          if (evSel === id) elegirEventoInicial();
+          SL.aviso('Evento archivado', 'ok');
+          vEventos();
+        });
+      };
+    }
+  }
+
   function editorEvento(id) {
     vista.onclick = null;
     var ev = id ? JSON.parse(JSON.stringify(datos.eventos[id])) : {
@@ -499,10 +551,15 @@
           '<button type="button" class="boton claro chico" id="e-agregar">Agregar tipo de boleta</button>' +
         '</div>' +
         '<p class="error-form" id="e-error" role="alert"></p>' +
-        '<button class="boton" type="submit">Guardar evento</button>' +
+        '<div class="acciones-evento">' +
+          '<button class="boton" type="submit">Guardar evento</button>' +
+          (id ? '<button class="boton peligro" type="button" id="e-quitar"></button>' : '') +
+        '</div>' +
+        '<p class="fila-sub" id="e-quitar-nota"></p>' +
       '</form>';
 
     SL.$('#volver-eventos').onclick = function (e) { e.preventDefault(); vEventos(); };
+    if (id) prepararQuitar(id);
     SL.$('#e-graba').onchange = function () {
       SL.$('#campo-graba').className = this.checked ? 'campo' : 'campo oculto';
     };

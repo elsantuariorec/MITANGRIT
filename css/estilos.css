@@ -142,6 +142,9 @@ h1, h2, h3 {
 .boton.claro { background: transparent; color: var(--vino); }
 .boton.claro:hover { background: var(--vino-claro); }
 .boton.ok { background: var(--ok); border-color: var(--ok); }
+.boton.peligro { background: transparent; color: var(--vino); border-color: var(--vino); }
+.boton.peligro:hover { background: var(--vino); color: var(--marfil); }
+.acciones-evento { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 .boton.chico { min-height: 36px; padding: 6px 12px; font-size: 14px; }
 .boton.ancho { width: 100%; }
 
@@ -457,6 +460,7 @@ h1, h2, h3 {
 
 .tipo-editor { display: grid; grid-template-columns: 2fr 1fr 1fr 1.6fr .8fr auto; gap: 8px; align-items: end; padding: 12px; border: 1px solid var(--linea); border-radius: var(--radio); margin-bottom: 8px; background: var(--marfil); }
 .tipo-editor .campo { margin: 0; }
+.tipo-editor > * { min-width: 0; }
 .tipo-editor .campo > span { font-size: 13px; }
 .tipo-editor input { min-height: 42px; padding: 8px 10px; }
 .quitar { background: none; border: 0; color: var(--vino); font-weight: 700; cursor: pointer; padding: 10px; }
