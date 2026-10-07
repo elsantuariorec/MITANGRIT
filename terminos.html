@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Términos y tratamiento de datos · Mitangrit</title>
+<meta name="theme-color" content="#000000">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+<header class="barra">
+  <div class="firma"><a class="marca" href="index.html" aria-label="Mitangrit"><span class="mi">MI</span><span class="luz">TANGRIT</span></a><span class="credito">desarrollado por <strong>El Santuario</strong></span></div>
+  <img class="logo-esquina" src="img/el-santuario.png" alt="El Santuario">
+</header>
+
+<main class="terminos">
+  <a class="volver" href="index.html">‹ Volver a los eventos</a>
+  <h1>Términos y tratamiento de datos</h1>
+  <p class="terminos-fecha">Última actualización: 7 de octubre de 2026</p>
+
+  <section>
+    <h2>Quién es responsable</h2>
+    <p>Mitangrit es la plataforma de boletas de El Santuario, espacio creativo operado por DOS x DOS SAS. DOS x DOS SAS es responsable de los datos que nos das al comprar una boleta.</p>
+    <p>Para cualquier pregunta o solicitud sobre tus datos, <span id="contacto">escríbenos al WhatsApp de atención</span>.</p>
+  </section>
+
+  <section>
+    <h2>Qué datos pedimos y para qué</h2>
+    <ul>
+      <li><strong>Nombre y cédula:</strong> para emitir tu boleta y verificar tu ingreso en la puerta.</li>
+      <li><strong>WhatsApp:</strong> para enviarte tu boleta y avisarte de cambios en el evento que compraste.</li>
+      <li><strong>Nombre del titular de la cuenta que paga:</strong> para reconocer tu pago automáticamente.</li>
+    </ul>
+    <p>No vendemos tus datos ni los compartimos con terceros para publicidad. Se guardan en servidores de Google (Firebase), que usamos para operar la plataforma.</p>
+  </section>
+
+  <section id="grabaciones">
+    <h2>Grabaciones de los eventos</h2>
+    <p>Algunos eventos se graban en audio y video. Esos eventos llevan el aviso <strong>"Evento grabado en audio y video"</strong> en su página, y para comprar la boleta hay que marcar una casilla de autorización. La casilla dice quiénes van a usar las grabaciones en ese evento en particular.</p>
+    <p>Al marcarla, autorizas de forma gratuita que tu imagen y tu voz aparezcan en esas grabaciones y que se publiquen en YouTube, redes sociales y otras plataformas digitales, para difundir el evento y a sus artistas.</p>
+    <p><strong>Si prefieres no aparecer,</strong> avísanos en la entrada y te ubicamos fuera del plano principal de las cámaras. Si después encuentras un fragmento publicado en el que apareces y te incomoda, escríbenos y revisamos tu caso.</p>
+    <p>Los eventos sin ese aviso no se graban para publicación.</p>
+  </section>
+
+  <section>
+    <h2>Tus derechos</h2>
+    <p>Como titular de tus datos puedes, en cualquier momento:</p>
+    <ul>
+      <li>Conocer, actualizar y corregir tus datos.</li>
+      <li>Pedir la prueba de la autorización que nos diste.</li>
+      <li>Preguntar cómo hemos usado tus datos.</li>
+      <li>Revocar tu autorización o pedir que borremos tus datos, cuando no tengamos una obligación legal o contractual de conservarlos.</li>
+      <li>Presentar quejas ante la Superintendencia de Industria y Comercio.</li>
+    </ul>
+    <p>Respondemos las consultas en un máximo de 10 días hábiles y los reclamos en un máximo de 15 días hábiles.</p>
+  </section>
+
+  <section>
+    <h2>Pagos</h2>
+    <p>Los pagos se hacen directamente a la cuenta de Nequi Negocios del organizador. Mitangrit no recibe ni guarda datos de tarjetas ni de cuentas bancarias. Si pasa el tiempo de reserva sin que llegue el pago, la boleta se libera.</p>
+  </section>
+</main>
+
+<script src="js/config.js"></script>
+<script src="js/matcher.js"></script>
+<script src="js/core.js"></script>
+<script>
+  SL.db.obtener('config', null, function (e, c) {
+    if (c && c.whatsapp) {
+      document.getElementById('contacto').innerHTML = '<a href="' + SL.linkWhatsApp(c.whatsapp) +
+        '" target="_blank" rel="noopener">escríbenos al WhatsApp de atención</a>';
+    }
+  });
+</script>
+</body>
+</html>

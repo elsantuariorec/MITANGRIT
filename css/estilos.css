@@ -165,6 +165,48 @@ h1, h2, h3 {
 .fila-campos { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
 .check { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; margin-bottom: 16px; cursor: pointer; }
 .check input { width: 22px; height: 22px; accent-color: var(--vino); margin: 1px 0 0; flex: none; }
+.aviso-grabacion {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--negro);
+  color: var(--marfil);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 8px 14px;
+  border-radius: var(--radio);
+  margin-bottom: 18px;
+}
+.punto-rec {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #E5484D;
+  box-shadow: 0 0 6px rgba(229, 72, 77, .8);
+  flex: none;
+  animation: pulso 1.6s infinite;
+}
+.check.autoriza {
+  background: #FBF7EF;
+  border: 2px solid var(--linea);
+  border-radius: var(--radio);
+  padding: 12px 14px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+.check.autoriza:has(input:checked) { border-color: var(--vino); background: var(--vino-claro); }
+.nota-datos { margin-top: 6px; }
+.tiquete-rec {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 22px 22px;
+  padding: 10px 12px;
+  background: var(--marfil-hondo);
+  border-radius: var(--radio);
+  font-size: 14px;
+  font-weight: 600;
+}
 .error-form { color: var(--vino); font-weight: 600; margin: 0 0 12px; }
 
 /* ---------- boleto (forma de tiquete) ---------- */
@@ -422,6 +464,18 @@ h1, h2, h3 {
 .vista-previa-img { max-width: 180px; border: 2px solid var(--negro); border-radius: var(--radio); margin-top: 8px; }
 .interruptor { display: flex; align-items: center; gap: 10px; font-weight: 600; margin-bottom: 16px; cursor: pointer; }
 .interruptor input { width: 22px; height: 22px; accent-color: var(--vino); }
+
+/* ---------- términos ---------- */
+
+.terminos { max-width: 680px; margin: 0 auto; padding: 0 16px 72px; }
+.terminos h1 { font-size: clamp(40px, 8vw, 60px); text-transform: uppercase; color: var(--vino); margin-top: 18px; }
+.terminos-fecha { color: var(--tinta-suave); font-size: 14px; margin: 8px 0 0; }
+.terminos section { border-top: 2px solid var(--negro); margin-top: 28px; padding-top: 18px; }
+.terminos h2 { font-size: 30px; text-transform: uppercase; margin-bottom: 10px; }
+.terminos p, .terminos li { line-height: 1.6; }
+.terminos ul { padding-left: 20px; }
+.terminos li + li { margin-top: 6px; }
+#grabaciones { scroll-margin-top: 16px; }
 
 /* ---------- aviso flotante ---------- */
 

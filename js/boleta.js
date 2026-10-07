@@ -145,6 +145,7 @@
           '<div class="dato"><span>Nombre</span><strong>' + SL.esc(p.nombre) + '</strong></div>' +
           '<div class="dato"><span>Boleta</span><strong>' + SL.esc(p.cortesia ? 'Cortesía' : p.tipoNombre) + (p.cant > 1 ? ' × ' + p.cant : '') + '</strong></div>' +
         '</div>' +
+        (p.grabado ? '<div class="tiquete-rec"><span class="punto-rec" aria-hidden="true"></span>Este evento se graba en audio y video</div>' : '') +
       '</article>' +
       '<div class="acciones">' +
         '<button class="boton negro" type="button" id="compartir">Guardar enlace de mi boleta</button>' +

@@ -200,6 +200,13 @@ SL.copiar = function (texto, cb) {
   }
 };
 
+// Texto exacto de la autorización de imagen (se guarda en cada pedido como prueba)
+SL.textoGrabacion = function (quien) {
+  return 'Sé que este evento será grabado en audio y video, y autorizo a ' + (quien || 'El Santuario') +
+    ' a usar mi imagen y voz en esas grabaciones para publicarlas en YouTube, redes sociales y otras plataformas digitales.';
+};
+SL.GRABAN_POR_DEFECTO = 'El Santuario y Cadencia';
+
 SL.ESTADOS = {
   pendiente: 'Esperando pago',
   aprobada: 'Aprobada',

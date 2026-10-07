@@ -142,6 +142,7 @@
           '<div>' + SL.esc(ev.lugar || '') + (ev.direccion ? ', ' + SL.esc(ev.direccion) : '') + '</div></div>' +
           (ev.descripcion ? '<p class="detalle-desc">' + SL.esc(ev.descripcion) + '</p>' : '') +
           '<form class="bloque-compra" id="compra" novalidate>' +
+            (ev.grabado ? '<div class="aviso-grabacion"><span class="punto-rec" aria-hidden="true"></span>Evento grabado en audio y video</div>' : '') +
             '<h2>Boletas</h2>' +
             '<div class="tipos" id="tipos"></div>' +
             '<div id="resto-compra" class="oculto">' +
@@ -158,9 +159,14 @@
               '<label class="check"><input type="checkbox" id="f-yo" checked> <span>Voy a pagar desde mi propia cuenta</span></label>' +
               '<label class="campo oculto" id="campo-titular"><span>¿A nombre de quién está la cuenta que paga?</span>' +
                 '<input id="f-titular" autocomplete="off"><small>Así reconocemos tu pago automáticamente.</small></label>' +
+              (ev.grabado ? '<label class="check autoriza"><input type="checkbox" id="f-graba"> <span>' +
+                SL.esc(SL.textoGrabacion(ev.grabanQuien || SL.GRABAN_POR_DEFECTO)) +
+                ' <a href="terminos.html#grabaciones" target="_blank" rel="noopener">Ver detalles</a></span></label>' : '') +
               '<p class="error-form" id="error-compra" role="alert"></p>' +
               '<button class="boton ancho" type="submit" id="apartar">Apartar y pagar</button>' +
               '<p class="tipo-nota" style="margin-top:10px" id="nota-reserva"></p>' +
+              '<p class="tipo-nota nota-datos">Tus datos (nombre, cédula y WhatsApp) solo se usan para tu boleta y para avisarte sobre este evento. ' +
+                '<a href="terminos.html" target="_blank" rel="noopener">Términos y tratamiento de datos</a></p>' +
             '</div>' +
           '</form>' +
         '</div>' +
@@ -173,6 +179,8 @@
       SL.$('#campo-titular').className = this.checked ? 'campo oculto' : 'campo';
     };
     SL.$('#compra').onsubmit = function (e) { e.preventDefault(); apartar(); };
+    var casilla = SL.$('#f-graba');
+    if (casilla) casilla.onchange = function () { if (this.checked) SL.$('#error-compra').textContent = ''; };
     SL.$('#nota-reserva').textContent = 'Tu entrada queda apartada ' + (config.minutosReserva || 30) +
       ' minutos mientras haces el pago.';
     pintarTipos();
@@ -256,6 +264,10 @@
     if (doc.length < 5) return (err.textContent = 'Revisa el número de cédula.');
     if (wa.length !== 10) return (err.textContent = 'El WhatsApp debe tener 10 dígitos.');
     if (!titular) return (err.textContent = 'Escribe el nombre del titular de la cuenta que va a pagar.');
+    var grabado = !!estado.ev.grabado;
+    if (grabado && !SL.$('#f-graba').checked) {
+      return (err.textContent = 'Para comprar, marca la casilla de autorización de imagen y voz.');
+    }
 
     var boton = SL.$('#apartar');
     boton.disabled = true;
@@ -291,8 +303,13 @@
         estado: gratis ? 'aprobada' : 'pendiente',
         creado: { '.sv': 'timestamp' },
         expira: ahora + minutos * 60000,
-        usadas: 0
+        usadas: 0,
+        aceptoDatos: ahora
       };
+      if (grabado) {
+        pedido.grabado = true;
+        pedido.autorizaImagen = { ts: ahora, texto: SL.textoGrabacion(estado.ev.grabanQuien || SL.GRABAN_POR_DEFECTO) };
+      }
       var cambios = {};
       cambios['pedidos/' + id] = pedido;
       cambios['ocupacion/' + estado.ev.id + '/' + id] = { t: estado.tipo, n: estado.cant, e: gratis ? 'a' : 'p', x: gratis ? 0 : pedido.expira };

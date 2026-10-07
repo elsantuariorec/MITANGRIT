@@ -486,6 +486,11 @@
           '<label class="campo"><span>Flyer</span><input id="e-flyer" type="file" accept="image/*">' +
             '<small>Se reduce automáticamente para que cargue rápido.</small><div id="e-flyer-prev"></div></label>' +
           '<label class="interruptor"><input type="checkbox" id="e-pub"' + (ev.publicado ? ' checked' : '') + '> Visible en la página de boletas</label>' +
+          '<label class="interruptor"><input type="checkbox" id="e-graba"' + (ev.grabado ? ' checked' : '') + '> Este evento se graba en audio y video</label>' +
+          '<label class="campo' + (ev.grabado ? '' : ' oculto') + '" id="campo-graba"><span>¿Quién usará las grabaciones?</span>' +
+            '<input id="e-graba-quien" value="' + SL.esc(ev.grabanQuien || SL.GRABAN_POR_DEFECTO) + '">' +
+            '<small>Los compradores tendrán que marcar una casilla autorizando el uso de su imagen y voz. ' +
+            'Para invitados con cortesía, pon también un aviso impreso en la entrada.</small></label>' +
         '</div>' +
         '<div class="caja"><h3>Boletas</h3>' +
           '<p class="fila-sub" style="margin:0 0 12px">"Personas" es cuántas entran con cada boleta (2 para una boleta de pareja). ' +
@@ -498,6 +503,9 @@
       '</form>';
 
     SL.$('#volver-eventos').onclick = function (e) { e.preventDefault(); vEventos(); };
+    SL.$('#e-graba').onchange = function () {
+      SL.$('#campo-graba').className = this.checked ? 'campo' : 'campo oculto';
+    };
     SL.$('#e-agregar').onclick = function () {
       var d = document.createElement('div');
       d.innerHTML = filaTipo({ id: 't' + SL.aleatorio(5), nombre: '', precio: '', cupo: '', hasta: '', personas: 1 });
@@ -539,6 +547,8 @@
         direccion: SL.$('#e-dir').value.trim(),
         descripcion: SL.$('#e-desc').value.trim(),
         publicado: SL.$('#e-pub').checked,
+        grabado: SL.$('#e-graba').checked,
+        grabanQuien: SL.$('#e-graba-quien').value.trim() || SL.GRABAN_POR_DEFECTO,
         creado: ev.creado || Date.now(),
         tipos: {}
       };
@@ -705,7 +715,7 @@
     function celda(v) { v = String(v === undefined || v === null ? '' : v); return '"' + v.replace(/"/g, '""') + '"'; }
     var cab = soloAsistentes ?
       ['Nombre', 'Cédula', 'Código', 'Boleta', 'Entradas', 'Ingresaron', 'WhatsApp'] :
-      ['Código', 'Estado', 'Nombre', 'Cédula', 'WhatsApp', 'Titular del pago', 'Boleta', 'Cantidad', 'Entradas', 'Total', 'Creado', 'Aprobado por', 'Ingresaron'];
+      ['Código', 'Estado', 'Nombre', 'Cédula', 'WhatsApp', 'Titular del pago', 'Boleta', 'Cantidad', 'Entradas', 'Total', 'Creado', 'Aprobado por', 'Ingresaron', 'Autorizó imagen y voz'];
     var filas = [cab.map(celda).join(';')];
     l.forEach(function (p) {
       var est = p.estado === 'pendiente' && p.expira < ahora ? 'vencida' : p.estado;
@@ -713,7 +723,8 @@
         [p.nombre, p.doc, p.codigo, p.cortesia ? 'Cortesía' : p.tipoNombre, p.entradas || p.cant, p.usadas || 0, p.wa] :
         [p.codigo, SL.ESTADOS[est], p.nombre, p.doc, p.wa, p.titular, p.cortesia ? 'Cortesía' : p.tipoNombre, p.cant,
           p.entradas || p.cant, p.total, p.creado ? SL.fechaCorta(p.creado) : '',
-          p.aprobado ? p.aprobado.por : '', p.usadas || 0];
+          p.aprobado ? p.aprobado.por : '', p.usadas || 0,
+          p.autorizaImagen ? 'Sí, ' + SL.fechaCorta(p.autorizaImagen.ts) : (p.grabado ? 'No' : 'No aplica')];
       filas.push(fila.map(celda).join(';'));
     });
     var blob = new Blob(['﻿' + filas.join('\r\n')], { type: 'text/csv;charset=utf-8' });
